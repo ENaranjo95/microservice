@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: posts-depl
+spec:
+  replicas: 1
+  selector:
+  # Matching our pods name to the metadata below
+    matchLabels:
+      app: posts
+  template:
+    metadata: 
+      labels:
+        app: posts
+    spec:
+      containers:
+        - name: posts
+          image: edwinnaranjo/posts
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: posts-clusterip-srv
+spec:
+  selector:
+    app: posts
+  type: ClusterIP #Default is ClusterIP service
+  ports:
+    - name: posts
+      protocol: TCP
+      port: 4000
+      targetPort: 4000
