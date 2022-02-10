@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: query-depl
+spec:
+  replicas: 1
+  selector:
+  # Matching our pods name to the metadata below
+    matchLabels:
+      app: query
+  template:
+    metadata: 
+      labels:
+        app: query
+    spec:
+      containers:
+        - name: query
+          image: edwinnaranjo/query
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: query-srv
+spec:
+  selector:
+    app: query
+  type: ClusterIP # Default is ClusterIP service
+  ports:
+    - name: query
+      protocol: TCP
+      port: 4002
+      targetPort: 4002
